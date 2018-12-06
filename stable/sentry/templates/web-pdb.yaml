@@ -1,0 +1,17 @@
+{{- if gt .Values.web.replicaCount 1.0 }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app: {{ template "fullname" . }}-web
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "fullname" . }}-web
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}-web
+      release: {{ .Release.Name }}
+  minAvailable: {{ .Values.web.minAvailable }}
+{{- end }}

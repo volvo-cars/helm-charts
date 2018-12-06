@@ -63,6 +63,7 @@ The following table lists the configurable parameters of the Sentry chart and th
 | `imagePullPolicy`                    | Image pull policy                           | `IfNotPresent`                                             |
 | `web.podAnnotations`                 | Web pod annotations                         | `{}`                                                       |
 | `web.replicacount`                   | Amount of web pods to run                   | `1`                                                        |
+| `web.minAvailable`                   | Min avail. of web pods to run               | `1`                                                        |
 | `web.resources.limits`               | Web resource limits                         | `{cpu: 500m, memory: 500Mi}`                               |
 | `web.resources.requests`             | Web resource requests                       | `{cpu: 300m, memory: 300Mi}`                               |
 | `web.env`                            | Additional web environment variables        | `[{name: GITHUB_APP_ID}, {name: GITHUB_API_SECRET}]`       |

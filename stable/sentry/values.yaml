@@ -12,6 +12,7 @@ image:
 # How many web UI instances to run
 web:
   replicacount: 1
+  minAvailable: 1
   resources:
     limits:
       cpu: 500m
