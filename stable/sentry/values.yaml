@@ -140,13 +140,21 @@ ingress:
 # TODO: add support for plugins https://docs.sentry.io/server/plugins/
 
 postgresql:
-  postgresDatabase: sentry
-  postgresUser: sentry
+  enabled: true
+  name: sentry
+  user: sentry
+  port: 5432
+  # host: postgres
+  # password: postgres
   imageTag: "9.5"
   persistence:
     enabled: true
 
 redis:
+  enabled: true
+  port: 6379
+  # host: redis
+  # password: 
   persistence:
     enabled: true
 

@@ -109,6 +109,16 @@ The following table lists the configurable parameters of the Sentry chart and th
 | `persistence.size`                   | PVC Storage Request                         | `10Gi`                                                     |
 | `config.configYml`                   | Sentry config.yml file                      | ``                                                         |
 | `config.sentryConfPy`                | Sentry sentry.conf.py file                  | ``                                                         |
+| `postgresql.enabled`                 | Deploy postgresql helm chart                | `true`                                                     |
+| `postgresql.host`                    | Postgresql hostname                         | ``                                                         |
+| `postgresql.port`                    | Postgresql port                             | `5432`                                                     |
+| `postgresql.name`                    | Postgresql db name                          | `sentry`                                                   |
+| `postgresql.user`                    | Postgresql username                         | `sentry`                                                   |
+| `postgresql.password`                | Postgresql password                         | ``                                                         |
+| `redis.enabled`                      | Deploy redis helm chart                     | `true`                                                     |
+| `redis.host`                         | Redis hostname                              | ``                                                         |
+| `redis.port`                         | Redis port                                  | `6379`                                                     |
+| `redis.password`                     | Redis password                              | ``                                                         |
 
 Dependent charts can also have values overwritten. Preface values with postgresql.* or redis.*
 
@@ -127,6 +137,14 @@ $ helm install --name my-release -f values.yaml stable/sentry
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
+
+## PostgresSQL
+
+By default, Sentry will install a Postgresql instance. To use an external one set `postgresql.enabled` to `false` and set `postgresql.host`, `postgresql.port`, `postgresql.user`, `postgresql.name` and `postgresql.password`.
+
+## Redis
+
+By default, Sentry will install a Redis instance. To use an external one set `redis.enabled` to `false` and set `redis.host`, `redis.port` and `redis.password`.
 
 ## Persistence
 
