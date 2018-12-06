@@ -28,3 +28,65 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "smtp.fullname" -}}
 {{- printf "%s-%s" .Release.Name "smtp" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Set postgres host
+*/}}
+{{- define "postgresql.host" -}}
+{{- if .Values.postgresql.enabled -}}
+{{- template "postgresql.fullname" . -}}
+{{- else -}}
+{{- .Values.postgresql.host | quote -}}
+{{- end -}}
+{{- end -}}
+ {{/*
+Set postgres secret
+*/}}
+{{- define "postgresql.secret" -}}
+{{- if .Values.postgresql.enabled -}}
+{{- template "postgresql.fullname" . -}}
+{{- else -}}
+{{- template "fullname" . -}}
+{{- end -}}
+{{- end -}}
+ {{/*
+Set postgres port
+*/}}
+{{- define "postgresql.port" -}}
+{{- if .Values.postgresql.enabled -}}
+    "5432"
+{{- else -}}
+{{- default "5432" .Values.postgresql.port | quote -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set redis host
+*/}}
+{{- define "redis.host" -}}
+{{- if .Values.redis.enabled -}}
+{{- template "redis.fullname" . -}}
+{{- else -}}
+{{- .Values.redis.host | quote -}}
+{{- end -}}
+{{- end -}}
+ {{/*
+Set postgres secret
+*/}}
+{{- define "redis.secret" -}}
+{{- if .Values.redis.enabled -}}
+{{- template "redis.fullname" . -}}
+{{- else -}}
+{{- template "fullname" . -}}
+{{- end -}}
+{{- end -}}
+ {{/*
+Set postgres port
+*/}}
+{{- define "redis.port" -}}
+{{- if .Values.redis.enabled -}}
+    "5432"
+{{- else -}}
+{{- default "5432" .Values.redis.port | quote -}}
+{{- end -}}
+{{- end -}}
