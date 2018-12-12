@@ -11,7 +11,8 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ template "fullname" . }}-web
+      app: {{ template "fullname" . }}
       release: {{ .Release.Name }}
+      role: web
   minAvailable: {{ .Values.web.minAvailable }}
 {{- end }}
