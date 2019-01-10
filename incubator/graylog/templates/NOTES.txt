@@ -16,7 +16,7 @@ To connect to your Graylog server:
   echo http://$SERVICE_IP:{{ default 9000 .Values.graylog.service.port }}
 {{- else if contains "ClusterIP" .Values.graylog.service.type }}
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "graylog.name" . }},release={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:9000 to use your application"
+  echo "Visit http://graylog.infrastructure.volvo.care to use your application"
   kubectl port-forward $POD_NAME 9000:9000
 {{- end }}
 
@@ -26,7 +26,6 @@ To connect to your Graylog server:
   echo "Password: $(kubectl get secret {{ template "graylog.fullname" . }} -o "jsonpath={.data['auth']}" | base64 -D)"
 
 To send logs to graylog:
-
 
 {{- if .Values.graylog.input.tcp }}
 1. TCP

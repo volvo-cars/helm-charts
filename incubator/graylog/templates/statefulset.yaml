@@ -167,7 +167,7 @@ spec:
           {{- end }}
           resources:
 {{ toYaml .Values.graylog.resources | indent 12 }}
-          livenessProbe:
+          readinessProbe:
             httpGet:
               path: /api/system/lbstatus
               port: 9000
@@ -231,6 +231,12 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: journal
+        labels:
+          app.kubernetes.io/name: {{ template "graylog.name" . }}
+          helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+          app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+          app.kubernetes.io/instance: "{{ .Release.Name }}"
+          app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
       spec:
         accessModes:
           - {{ .Values.graylog.persistence.accessMode | quote }}

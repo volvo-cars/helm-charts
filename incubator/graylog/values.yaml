@@ -18,7 +18,7 @@ serviceAccount:
 
 tags:
   # If true, this chart will install Elasticsearch from requirement dependencies
-  install-elasticsearch: true
+  install-elasticsearch: false
   # If true, this chart will install MongoDB replicaset from requirement dependencies
   install-mongodb: true
 
@@ -27,10 +27,10 @@ graylog:
   ## Ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
   image:
-    repository: "graylog/graylog:2.4"
+    repository: "graylog/graylog:2.5.1"
     pullPolicy: "IfNotPresent"
 
-  replicas: 2
+  replicas: 3
 
   ## Pod affinity
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -68,7 +68,7 @@ graylog:
     accessMode: ReadWriteOnce
     ## Graylog data Persistent Volume size
     ##
-    size: "20Gi"
+    size: "450Gi"
     ## Graylog data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -79,60 +79,63 @@ graylog:
     # storageClass: "ssd"
 
   ## Additional plugins you need to install on Graylog.
-  plugins: []
-    # - name: graylog-plugin-slack-2.7.1.jar
-    #   url: https://github.com/omise/graylog-plugin-slack/releases/download/2.7.1/graylog-plugin-slack-2.7.1.jar
-    # - name: graylog-plugin-function-check-diff-1.0.0.jar
-    #   url: https://github.com/omise/graylog-plugin-function-check-diff/releases/download/1.0.0/graylog-plugin-function-check-diff-1.0.0.jar
-    # - name: graylog-plugin-custom-alert-condition-1.0.0.jar
-    #   url: https://github.com/omise/graylog-plugin-custom-alert-condition/releases/download/v1.0.0/graylog-plugin-custom-alert-condition-1.0.0.jar
+  plugins:
+     - name: graylog-plugin-slack-2.7.1.jar
+       url: https://github.com/omise/graylog-plugin-slack/releases/download/2.7.1/graylog-plugin-slack-2.7.1.jar
+     - name: graylog-plugin-function-check-diff-1.0.0.jar
+       url: https://github.com/omise/graylog-plugin-function-check-diff/releases/download/1.0.0/graylog-plugin-function-check-diff-1.0.0.jar
+     - name: graylog-plugin-custom-alert-condition-1.0.0.jar
+       url: https://github.com/omise/graylog-plugin-custom-alert-condition/releases/download/v1.0.0/graylog-plugin-custom-alert-condition-1.0.0.jar
 
   ## A service for Graylog web interface
   service:
-    type: ClusterIP
+    type: LoadBalancer
     port: 9000
+
 
   ## Additional input ports for receiving logs from servers
   ## Note: Name must be in IANA_SVC_NAME (at most 15 characters, matching regex [a-z0-9]([a-z0-9-]*[a-z0-9])* and it must contains at least one letter [a-z], hyphens cannot be adjacent to other hyphens)
   ## Note: Array must be sorted by port order
   ##
-  input: {}
-    # tcp:
-    #   service:
-    #     type: LoadBalancer
-    #     loadBalancerIP:
-    #   ports:
-    #     - name: gelf
-    #       port: 12222
-    # udp:
-    #   service:
-    #     type: ClusterIP
-    #   ports:
-    #     - name: syslog
-    #       port: 12222
+  input:
+     tcp:
+       service:
+         type: LoadBalancer
+         loadBalancerIP:
+       ports:
+         - name: gelf
+           port: 12222
+     udp:
+       service:
+         type: ClusterIP
+       ports:
+         - name: syslog
+           port: 12222
+
 
   ingress:
-    ## If true, Graylog server Ingress will be created
-    ##
-    enabled: false
-    port: 80
-    ## Graylog server Ingress annotations
-    ##
-    annotations: {}
-    ## Graylog server Ingress hostnames with optional path
-    ## Must be provided if Ingress is enabled
-    ## Note: Graylog does not support two URL. You can specify only single URL
-    ##
-    hosts: []
-    #   - graylog.yourdomain.com
+     ## If true, Graylog server Ingress will be created
+     ##
+     enabled: false
+     port: 80
+     ## Graylog server Ingress annotations
+     ##
+     annotations:
+       kubernetes.io/ingress.class: "nginx-internal"
+     ## Graylog server Ingress hostnames with optional path
+     ## Must be provided if Ingress is enabled
+     ## Note: Graylog does not support two URL. You can specify only single URL
+     ##
+     hosts:
+       - graylog.infrastructure.volvo.care
 
     ## Graylog server Ingress TLS configuration
     ## Secrets must be manually created in the namespace
     ##
-    tls: []
+     tls: []
     #   - secretName: graylog-server-tls
     #     hosts:
-    #       - graylog.yourdomain.com
+    #       - graylog.infrastructure.volvo.care
 
 
   ## Configure resource requests and limits
@@ -140,10 +143,10 @@ graylog:
   ##
   resources:
     limits:
-      cpu: "1"
+      cpu: 1.5
     requests:
-      cpu: "500m"
-      memory: "1024Mi"
+      cpu: .25
+      memory: "3072Mi"
 
   ## Set Graylog Java heapsize. If this value empty, chart will automatically calculate heapsize from `resources.requests.memory`
   # heapSize: "1024g"
@@ -172,7 +175,7 @@ graylog:
   ## Graylog root password
   ## Defaults to a random 10-character alphanumeric string if not set
   ##
-  # rootPassword: ""
+  rootPassword: ""
 
   ## Graylog root email
   ##
@@ -180,7 +183,8 @@ graylog:
 
   ## Graylog root timezone
   ##
-  rootTimezone: "UTC"
+  rootTimezone: America/Los_Angeles
+
 
   elasticsearch:
     ## List of Elasticsearch hosts Graylog should connect to.
@@ -188,7 +192,7 @@ graylog:
     ## If one or more of your elasticsearch hosts require authentication, include the credentials in each node URI that
     ## requires authentication.
     ##
-    # hosts: http://elasticsearch-client.graylog.svc.cluster.local:9200
+    hosts: http://logging-elasticsearch-client.logging.svc.cluster.local:9200
 
     ## These configuration settings are only used on the first start of Graylog. After that,
     ## index related settings can be changed in the Graylog web interface on the 'System / Indices' page.
@@ -234,7 +238,7 @@ graylog:
 elasticsearch:
   image:
     repository: "docker.elastic.co/elasticsearch/elasticsearch"
-    tag: "5.6.14"
+    tag: "6.5.4"
   cluster:
     xpackEnable: false
     config:
