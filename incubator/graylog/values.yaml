@@ -89,8 +89,9 @@ graylog:
 
   ## A service for Graylog web interface
   service:
-    type: LoadBalancer
     port: 9000
+    type: ClusterIP
+
 
 
   ## Additional input ports for receiving logs from servers
@@ -116,8 +117,8 @@ graylog:
   ingress:
      ## If true, Graylog server Ingress will be created
      ##
-     enabled: false
-     port: 80
+     enabled: true
+     port: 9000
      ## Graylog server Ingress annotations
      ##
      annotations:
@@ -127,15 +128,15 @@ graylog:
      ## Note: Graylog does not support two URL. You can specify only single URL
      ##
      hosts:
-       - graylog.infrastructure.volvo.care
+       - graylog-uswest2-development.infrastructure.volvo.care
 
     ## Graylog server Ingress TLS configuration
     ## Secrets must be manually created in the namespace
     ##
      tls: []
-    #   - secretName: graylog-server-tls
+    #   - secretName: volvo-care-infrastructure-tls
     #     hosts:
-    #       - graylog.infrastructure.volvo.care
+    #       - graylog-uswest2-development.infrastructure.volvo.care
 
 
   ## Configure resource requests and limits
