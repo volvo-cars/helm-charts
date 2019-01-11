@@ -90,12 +90,10 @@ data:
     root_email = {{ .Values.graylog.rootEmail }}
     root_timezone = {{ default "UTC" .Values.graylog.rootTimezone }}
     plugin_dir = /usr/share/graylog/plugin
-    rest_listen_uri = http://0.0.0.0:9000/api/
-    #web_enable = true
+    rest_listen_uri =   http://0.0.0.0:9000/api/
+    rest_transport_uri = http://graylog-uswest2-development.infrastructure.volvo.care:9000/api/
     web_listen_uri = http://0.0.0.0:9000/
-  {{- if .Values.graylog.ingress.enabled }}
-    web_endpoint_uri =  {{ template "graylog.url" .}}/api
-  {{- end }}
+    web_endpoint_uri =  http://graylog-uswest2-development.infrastructure.volvo.care{{- if not .Values.graylog.ingress.enabled }}:31444{{- end }}/api/
     elasticsearch_hosts = {{ template "graylog.elasticsearch.hosts" . }}
     elasticsearch_connect_timeout = 10s
     elasticsearch_socket_timeout = 60s
@@ -146,5 +144,3 @@ data:
     content_packs_dir = /usr/share/graylog/data/contentpacks
     content_packs_auto_load = grok-patterns.json
     proxied_requests_thread_pool_size = 32
-
-
