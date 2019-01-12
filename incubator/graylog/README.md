@@ -36,7 +36,7 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
   helm install -n "graylog" . --namespace logging  \
     --set rootPassword= "xxxxxxxxxxxxxxxx"
     --set elasticsearch.hosts=http://logging-elasticsearch-client.logging.svc.cluster.local:9200 \
-    --set graylog.mongodb.uri=mongodb://mongodb-mongodb-replicaset-0.mongodb-mongodb-replicaset.logging.svc.cluster.local:27017/graylog?replicaSet=rs0 \
+    --set graylog.mongodb.uri=mongodb://mongodb-mongodb-replicaset-0.mongodb-mongodb-replicaset.logging.svc.cluster.local:27017/graylog?replicaSet=rs0 
 ```
 
 After installation succeeds, you can get a status of Chart
