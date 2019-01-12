@@ -1,5 +1,3 @@
-## Pending Issue: Graylog web_endpoint_uri
-
 # Graylog
 
 This chart provide the [Graylog](https://www.graylog.org/) deployments.
