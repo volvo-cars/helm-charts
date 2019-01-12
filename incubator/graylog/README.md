@@ -1,4 +1,4 @@
-## Pending Issue: Graylog web_endpoint_uri 
+## Pending Issue: Graylog web_endpoint_uri
 
 # Graylog
 
@@ -37,7 +37,6 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
     --set rootPassword= "xxxxxxxxxxxxxxxx"
     --set elasticsearch.hosts=http://logging-elasticsearch-client.logging.svc.cluster.local:9200 \
     --set graylog.mongodb.uri=mongodb://mongodb-mongodb-replicaset-0.mongodb-mongodb-replicaset.logging.svc.cluster.local:27017/graylog?replicaSet=rs0 \
-    --set ingress.enabled=true
 ```
 
 After installation succeeds, you can get a status of Chart
@@ -58,7 +57,7 @@ For example:
 Set cluster size to 5
 
 ```bash
-helm install --namespace "graylog" -n "graylog" --set servers.replicas=5 stable/graylog
+helm install -n graylog --namespace logging . --set servers.replicas=5
 ```
 
 The command above will install 1 master and 4 coordinating.
@@ -91,7 +90,7 @@ The following table lists the configurable parameters of the Cassandra chart and
 | `graylog.ingress.enabled`               | If true, Graylog Ingress will be created                                                                                                              | `false`                               |
 | `graylog.ingress.port`                  | Graylog Ingress port                                                                                                                                  | `false`                               |
 | `graylog.ingress.annotations`           | Graylog Ingress annotations                                                                                                                           | `kubernetes.io/ingress.class: "nginx-internal"`                                  |
-| `graylog.ingress.hosts`                 | Graylog Ingress host names                                                                                                                            | `*.infrastructure.volvo.care`                                  |
+| `graylog.ingress.hosts`                 | Graylog Ingress host names                                                                                                                            | `graylog-uswest2-development.infrastructure.volvo.care`                                  |
 | `graylog.ingress.tls`                   | Graylog Ingress TLS configuration (YAML)                                                                                                              | `[]`                                  |
 | `graylog.input`                         | Graylog Input configuration (YAML) Sees #Input section for detail                                                                                     | `TCP, UDP`                                  |
 | `graylog.metrics.enabled`               | If true, add Prometheus annotations to pods                                                                                                           | `true`                               |
