@@ -32,7 +32,7 @@ To install the Graylog Chart into your Kubernetes cluster (This Chart requires p
 ```bash
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
   helm install -n graylog . --namespace logging  \
-    --set rootPassword= "xxxxxxxxxxxxxxxx"
+    --set rootPassword= "xxxxxxxxxxxxxxxx" \
     --set elasticsearch.hosts=http://logging-elasticsearch-client.logging.svc.cluster.local:9200 \
     --set graylog.mongodb.uri=mongodb://mongodb-mongodb-replicaset-0.mongodb-mongodb-replicaset.logging.svc.cluster.local:27017/graylog?replicaSet=rs0 
 ```
