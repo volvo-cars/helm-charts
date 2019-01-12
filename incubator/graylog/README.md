@@ -42,12 +42,12 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 After installation succeeds, you can get a status of Chart
 
 ```bash
-helm status "graylog"
+helm status graylog
 ```
 
 If you want to delete your Chart, use this command
 ```bash
-helm delete --purge "graylog"
+helm delete --purge graylog
 ```
 
 ## Install Chart with specific Graylog cluster size
