@@ -54,7 +54,6 @@ halyard:
     #   memory: "2Gi"
     #   cpu: "200m"
 
-
 # Define which registries and repositories you want available in your
 # Spinnaker pipeline definitions
 # For more info visit:
