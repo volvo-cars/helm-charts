@@ -6,7 +6,6 @@ metadata:
 {{ include "spinnaker.standard-labels" . | indent 4 }}
 data:
   redis.yml: |-
-
     {{- if .Values.redis.enabled }}
     overrideBaseUrl: redis://:{{ .Values.redis.password }}@{{ .Release.Name }}-redis-master:6379
     {{- else }}
@@ -17,12 +16,20 @@ data:
     {{- end }}
     {{- end }}
     skipLifeCycleManagement: true
+    {{- if .Values.halyard.additionalServiceSettings.redis }}
+{{ tpl .Values.halyard.additionalServiceSettings.redis . | indent 4 }}
+    {{- end }}
+
   gate.yml: |-
     kubernetes:
     {{- if .Values.ingress.enabled }}
       useExecHealthCheck: false
       serviceType: NodePort
     {{- end }}
+    {{- if .Values.halyard.additionalServiceSettings.gate }}
+{{ tpl .Values.halyard.additionalServiceSettings.gate . | indent 4 }}
+    {{- end }}
+
   deck.yml: |-
     env:
       API_HOST: http://spin-gate.{{ .Release.Namespace }}:8084
@@ -30,4 +37,7 @@ data:
     {{- if .Values.ingress.enabled }}
       useExecHealthCheck: false
       serviceType: NodePort
+    {{- end }}
+    {{- if .Values.halyard.additionalServiceSettings.deck }}
+{{ tpl .Values.halyard.additionalServiceSettings.deck . | indent 4 }}
     {{- end }}
