@@ -28,6 +28,14 @@ spec:
             - name: SLACK_URL
               value: {{ . | quote }}
             {{- end }}
+            {{- with .Values.detachAsg }}
+            - name: DETACH_ASG
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.gracePeriod }}
+            - name: GRACE_PERIOD
+              value: {{ . | quote }}
+            {{- end }}
             - name: POLL_INTERVAL
               value: {{ .Values.pollInterval | quote }}
             - name: CLUSTER
