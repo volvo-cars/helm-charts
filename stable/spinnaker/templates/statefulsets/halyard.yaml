@@ -29,6 +29,10 @@ spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
+      {{- if .Values.halyard.resources }}
+      resources:
+{{ toYaml .Values.halyard.resources | indent 8 }}
+      {{- end }}
       initContainers:
       - name: "create-halyard-local"
         image: {{ .Values.halyard.image.repository }}:{{ .Values.halyard.image.tag }}
