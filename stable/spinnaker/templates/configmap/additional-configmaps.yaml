@@ -9,7 +9,7 @@ data:
 {{- if  and .Values.halyard.additionalConfigMaps.create .Values.halyard.additionalConfigMaps.data }}
 {{- range $index, $content := .Values.halyard.additionalConfigMaps.data }}
   {{ $index }}: |-
-{{ $content | indent 4 }}
+{{ tpl $content $ | indent 4 }}
 {{- end }}
 {{- end }}
 {{- end }}
