@@ -36,6 +36,15 @@ halyard:
             internalProxies: .*
             httpsServerPort: X-Forwarded-Port
 
+  ## Define custom settings for Spinnaker services. Read more for details:
+  ## https://www.spinnaker.io/reference/halyard/custom/#custom-service-settings
+  ## Currently only settings for "redis", "gate" and "deck" are supported.
+  ## Please note that some settings are already set by default (see `templates/configmap/service-settings.yaml`)
+  additionalServiceSettings: {}
+  #   redis: |-
+  #   gate: |-
+  #   deck: |-
+
   ## Uncomment if you want to add extra commands to the init script
   ## run by the init container before halyard is started.
   # additionalInitScript: |-
