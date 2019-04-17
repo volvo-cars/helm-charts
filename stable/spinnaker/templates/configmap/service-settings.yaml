@@ -41,3 +41,10 @@ data:
     {{- if .Values.halyard.additionalServiceSettings.deck }}
 {{ tpl .Values.halyard.additionalServiceSettings.deck . | indent 4 }}
     {{- end }}
+
+{{- range $service, $data := .Values.halyard.additionalServiceSettings -}}
+  {{- if and $data (ne $service "redis") (ne $service "gate") (ne $service "deck") }}
+  {{ $service }}.yml: |-
+{{ tpl $data $ | indent 4 }}
+  {{- end }}
+{{- end }}
