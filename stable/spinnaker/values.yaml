@@ -38,14 +38,14 @@ halyard:
 
   ## Define custom settings for Spinnaker services. Read more for details:
   ## https://www.spinnaker.io/reference/halyard/custom/#custom-service-settings
-  ## You can use it to add annotations for pods.
-  ## Please note that redis, gate and deck services already have default settings rendered (see `templates/configmap/service-settings.yaml`)
+  ## You can use it to add annotations for pods, override the image, etc.
   additionalServiceSettings: {}
-    # front50: |-
+    # deck:
+    #   artifactId: gcr.io/spinnaker-marketplace/deck:2.9.0-20190412012808
     #   kubernetes:
     #     podAnnotations:
     #       iam.amazonaws.com/role: <role_arn>
-    # clouddriver: |-
+    # clouddriver:
     #   kubernetes:
     #     podAnnotations:
     #       iam.amazonaws.com/role: <role_arn>
