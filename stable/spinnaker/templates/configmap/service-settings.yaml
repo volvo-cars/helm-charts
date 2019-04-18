@@ -6,45 +6,14 @@ metadata:
 {{ include "spinnaker.standard-labels" . | indent 4 }}
 data:
   redis.yml: |-
-    {{- if .Values.redis.enabled }}
-    overrideBaseUrl: redis://:{{ .Values.redis.password }}@{{ .Release.Name }}-redis-master:6379
-    {{- else }}
-    {{ if .Values.redis.external.password }}
-    overrideBaseUrl: redis://:{{ .Values.redis.external.password }}@{{ .Values.redis.external.host }}:{{ .Values.redis.external.port }}
-    {{- else }}
-    overrideBaseUrl: redis://{{ .Values.redis.external.host }}:{{ .Values.redis.external.port }}
-    {{- end }}
-    {{- end }}
-    skipLifeCycleManagement: true
-    {{- if .Values.halyard.additionalServiceSettings.redis }}
-{{ tpl .Values.halyard.additionalServiceSettings.redis . | indent 4 }}
-    {{- end }}
-
+{{ template "spinnaker.serviceSettings.redis" . }}
   gate.yml: |-
-    kubernetes:
-    {{- if .Values.ingress.enabled }}
-      useExecHealthCheck: false
-      serviceType: NodePort
-    {{- end }}
-    {{- if .Values.halyard.additionalServiceSettings.gate }}
-{{ tpl .Values.halyard.additionalServiceSettings.gate . | indent 4 }}
-    {{- end }}
-
+{{ template "spinnaker.serviceSettings.gate" . }}
   deck.yml: |-
-    env:
-      API_HOST: http://spin-gate.{{ .Release.Namespace }}:8084
-    kubernetes:
-    {{- if .Values.ingress.enabled }}
-      useExecHealthCheck: false
-      serviceType: NodePort
-    {{- end }}
-    {{- if .Values.halyard.additionalServiceSettings.deck }}
-{{ tpl .Values.halyard.additionalServiceSettings.deck . | indent 4 }}
-    {{- end }}
-
+{{ template "spinnaker.serviceSettings.deck" . }}
 {{- range $service, $data := .Values.halyard.additionalServiceSettings -}}
   {{- if and $data (ne $service "redis") (ne $service "gate") (ne $service "deck") }}
   {{ $service }}.yml: |-
-{{ tpl $data $ | indent 4 }}
+{{ toYaml $data | indent 4 }}
   {{- end }}
 {{- end }}
